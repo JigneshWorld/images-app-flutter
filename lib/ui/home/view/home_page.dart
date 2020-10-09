@@ -42,7 +42,24 @@ class HomePage extends StatelessWidget {
           );
         }
         return Center(
-          child: Text('No Images'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'No Images Found',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(
+                height: 48,
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('CLOSE'),
+              ),
+            ],
+          ),
         );
       },
     );
