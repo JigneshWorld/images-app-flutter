@@ -11,15 +11,18 @@ class HomeState extends Equatable {
 
   final bool hasNextPage;
   final bool isLoadingNextPage;
+  final String loadNextPageErrorMessage;
 
-  const HomeState({
-    this.query,
-    this.isLoading = true,
-    this.images = const [],
-    this.hasNextPage = false,
-    this.isLoadingNextPage = false,
-    this.errorMessage,
-  });
+  const HomeState(
+      {this.query,
+      this.isLoading = true,
+      this.images = const [],
+      this.hasNextPage = false,
+      this.isLoadingNextPage = false,
+      this.errorMessage,
+      this.loadNextPageErrorMessage});
+
+  int get itemCount => hasNextPage ? images.length + 1 : images.length;
 
   HomeState copyWith({
     String query,
@@ -28,6 +31,7 @@ class HomeState extends Equatable {
     String errorMessage,
     bool hasNextPage,
     bool isLoadingNextPage,
+    String loadNextPageErrorMessage,
   }) {
     return HomeState(
       query: query ?? this.query,
@@ -36,10 +40,19 @@ class HomeState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       hasNextPage: hasNextPage ?? this.hasNextPage,
       isLoadingNextPage: isLoadingNextPage ?? this.isLoadingNextPage,
+      loadNextPageErrorMessage:
+          loadNextPageErrorMessage ?? this.loadNextPageErrorMessage,
     );
   }
 
   @override
-  List<Object> get props =>
-      [query, isLoading, images, errorMessage, hasNextPage, isLoadingNextPage];
+  List<Object> get props => [
+        query,
+        isLoading,
+        images,
+        errorMessage,
+        hasNextPage,
+        isLoadingNextPage,
+        loadNextPageErrorMessage,
+      ];
 }

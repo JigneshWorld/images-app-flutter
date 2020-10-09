@@ -28,17 +28,21 @@ class HomePage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        if (state.images.isNotEmpty) {
-          final delegate = SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+        if (state.errorMessage != null) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(48.0),
+              child: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+              ),
+            ),
           );
-          return GridView.builder(
-            gridDelegate: delegate,
-            itemBuilder: (_, index) {
-              final image = state.images[index];
-              return Image.network(image.previewURL);
-            },
-            itemCount: state.images.length,
+        }
+        if (state.images.isNotEmpty) {
+          return _GridImages(
+            bloc: BlocProvider.of<HomeBloc>(context),
+            state: state,
           );
         }
         return Center(
@@ -72,11 +76,56 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-              icon: Icon(Icons.search), onPressed: () => _search(context))
+            icon: Icon(Icons.search),
+            onPressed: () => _search(context),
+          )
         ],
       ),
       body: body,
     );
     ;
+  }
+}
+
+class _GridImages extends StatelessWidget {
+  final ScrollController _scrollController = ScrollController();
+  final HomeState state;
+  final HomeBloc bloc;
+
+  _GridImages({Key key, this.state, this.bloc}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final delegate = SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+    );
+
+    return NotificationListener<ScrollNotification>(
+      onNotification: _handleScrollNotification,
+      child: GridView.builder(
+        gridDelegate: delegate,
+        itemBuilder: (_, index) {
+          if ((index >= state.images.length)) {
+            return _loaderGridItem();
+          }
+          final image = state.images[index];
+          return Image.network(image.previewURL);
+        },
+        itemCount: state.itemCount,
+        controller: _scrollController,
+      ),
+    );
+  }
+
+  Widget _loaderGridItem() {
+    return Container(child: Center(child: CircularProgressIndicator()));
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification is ScrollEndNotification &&
+        _scrollController.position.extentAfter < 500) {
+      bloc.add(HomeEventLoadNextPage());
+    }
+    return false;
   }
 }

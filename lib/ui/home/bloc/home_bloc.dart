@@ -20,9 +20,45 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async* {
     if (event is HomeEventInitialLoad) {
       yield HomeState(query: event.query, isLoading: true);
-      final images = await imagesRepo.search(query: event.query);
-      print(images);
-      yield state.copyWith(images: images, isLoading: false);
+      try{
+        final images = await imagesRepo.search(query: event.query);
+        final hasNextPage = images.length >= 20;
+        yield state.copyWith(
+          images: images,
+          isLoading: false,
+          hasNextPage: hasNextPage,
+        );
+      }catch(e, s){
+        print(e);
+        yield state.copyWith(
+          isLoading: false,
+          errorMessage: e.toString()
+        );
+      }
+    }
+
+    if (event is HomeEventLoadNextPage) {
+      yield state.copyWith(isLoadingNextPage: true);
+      final prevImages = state.images;
+      final page = (prevImages.length / 20).ceil();
+      try{
+        final newPageImages =
+        await imagesRepo.search(query: state.query, page: page+1);
+        final hasNextPage = newPageImages.length >= 20;
+        yield state.copyWith(
+          isLoadingNextPage: false,
+          images: [...prevImages, ...newPageImages],
+          hasNextPage: hasNextPage,
+        );
+      }catch(e,s){
+        print(e);
+        yield state.copyWith(
+          isLoadingNextPage: false,
+          loadNextPageErrorMessage: e.toString(),
+          hasNextPage: false,
+        );
+      }
+
     }
   }
 }

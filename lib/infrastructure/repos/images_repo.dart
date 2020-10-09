@@ -39,6 +39,15 @@ class ImagesRepoImpl extends ImagesRepo {
       }
     } catch (e, s) {
       print(e);
+      if(e is DioError){
+        print(e.response);
+        print(e.message);
+        print(e.error);
+        print(e.type);
+        throw HttpException(e.response.toString());
+      }else{
+        throw HttpException(e.toString());
+      }
     }
   }
 }
