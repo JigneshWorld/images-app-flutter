@@ -1,4 +1,6 @@
-class AppImage {
+import 'package:equatable/equatable.dart';
+
+class AppImage extends Equatable{
   int id;
   String pageURL;
   String type;
@@ -97,4 +99,7 @@ class AppImage {
     data['userImageURL'] = this.userImageURL;
     return data;
   }
+
+  @override
+  List<Object> get props => [id, previewURL, tags];
 }

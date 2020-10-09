@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:images_app/domain/index.dart';
+import 'package:images_app/ui/home/bloc/home_bloc.dart';
+import 'package:images_app/ui/home/view/index.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final title = 'Home Page';
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(title),
-      ),
+    return MultiProvider(
+      providers: [
+        BlocProvider(
+          create: (ctx) {
+            return HomeBloc(
+              imagesRepo: RepositoryProvider.of<ImagesRepo>(ctx),
+            )..add(HomeEventInitialLoad(''));
+          },
+        )
+      ],
+      child: HomePage(),
     );
   }
 }
