@@ -38,8 +38,8 @@ class ImagesRepoImpl extends ImagesRepo {
       if (response.statusCode == HttpStatus.ok) {
         print(response.data);
         final body = Map<String, dynamic>.from(response.data);
-        final total = body['total'];
-        final totalHits = body['totalHits'];
+        // final total = body['total'];
+        // final totalHits = body['totalHits'];
         final hits = body['hits'] as List<dynamic>;
         return hits.map((hit) => AppImage.fromJson(hit)).toList();
       } else {

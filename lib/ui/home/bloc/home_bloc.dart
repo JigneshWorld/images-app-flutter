@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:images_app/domain/index.dart';
 
 part 'home_event.dart';
@@ -9,9 +10,11 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ImagesRepo imagesRepo;
+  final SuggestionsRepo suggestionsRepo;
 
   HomeBloc({
-    this.imagesRepo,
+    @required this.imagesRepo,
+    @required this.suggestionsRepo,
   }) : super(HomeState());
 
   @override
@@ -23,6 +26,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield HomeState(query: event.query, isLoading: true);
       try{
         final images = await imagesRepo.search(query: event.query);
+        if(images.length > 0 && event.query != null && event.query.trim().isNotEmpty){
+          suggestionsRepo.add(event.query);
+        }
         final hasNextPage = images.length >= itemsPerPage;
         yield state.copyWith(
           images: images,
@@ -51,7 +57,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           images: [...prevImages, ...newPageImages],
           hasNextPage: hasNextPage,
         );
-      }catch(e,s){
+      }catch(e, s){
         print(e);
         yield state.copyWith(
           isLoadingNextPage: false,

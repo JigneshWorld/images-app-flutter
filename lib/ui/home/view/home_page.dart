@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:images_app/ui/search/index.dart';
 import '../bloc/home_bloc.dart';
+import '../../search/index.dart';
 
 class HomePage extends StatelessWidget {
   final bool onlyBody;
@@ -12,11 +12,13 @@ class HomePage extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> _search(BuildContext context) async {
-    final query = await showSearch<String>(
+    // ignore: close_sinks
+    final suggestionsBloc = BlocProvider.of<SuggestionsBloc>(context);
+    suggestionsBloc.add(SuggestionsEventQueryChanged(''));
+    await showSearch<String>(
       context: context,
-      delegate: AppSearchDelegate(),
+      delegate: AppSearchDelegate(suggestionsBloc),
     );
-    // BlocProvider.of<HomeBloc>(context).add(HomeEventInitialLoad(query));
   }
 
   @override
@@ -83,7 +85,6 @@ class HomePage extends StatelessWidget {
       ),
       body: body,
     );
-    ;
   }
 }
 

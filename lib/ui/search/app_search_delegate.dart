@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../index.dart';
+import 'index.dart';
 
 class AppSearchDelegate extends SearchDelegate<String> {
+  final SuggestionsBloc bloc;
+
+  AppSearchDelegate(this.bloc);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -23,40 +28,54 @@ class AppSearchDelegate extends SearchDelegate<String> {
     return Home.buildResults(context, query);
   }
 
-  final recentSearches = ['Yellow', 'Red', 'Magic'];
-
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty
-        ? recentSearches
-        : recentSearches.where((element) => element.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (_, index) {
-        final suggestion = suggestionList[index];
-        return ListTile(
-          leading: Icon(Icons.refresh),
-          title: RichText(
-            text: TextSpan(
-              text: suggestion.substring(0, query.length),
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                  text: suggestion.substring(query.length),
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                )
-              ],
+    bloc.add(SuggestionsEventQueryChanged(query));
+    return BlocBuilder<SuggestionsBloc, SuggestionsState>(
+      cubit: bloc,
+      builder: (_, state) {
+        if (state.suggestions.isEmpty) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(48),
+              child: Text('Press search button or enter on keyboard to search', textAlign: TextAlign.center,),
             ),
-          ),
-          onTap: () {
-            query = suggestion;
-            showResults(context);
+          );
+        }
+
+        final stateQuery = state.query;
+        return ListView.builder(
+          itemBuilder: (_, index) {
+            final suggestion = state.suggestions[index];
+            return ListTile(
+              leading: Icon(Icons.access_time),
+              title: RichText(
+                text: TextSpan(
+                  text: suggestion.substring(0, stateQuery.length),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: [
+                    if(suggestion.length > stateQuery.length)
+                    TextSpan(
+                      text: suggestion.substring(stateQuery.length),
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              onTap: () {
+                query = suggestion;
+                showResults(context);
+              },
+            );
           },
+          itemCount: state.suggestions.length,
         );
       },
-      itemCount: suggestionList.length,
     );
   }
 }

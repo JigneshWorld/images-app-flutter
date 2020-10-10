@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:images_app/domain/index.dart';
 import 'package:images_app/ui/home/bloc/home_bloc.dart';
 import 'package:images_app/ui/home/view/index.dart';
+import 'package:images_app/ui/search/bloc/suggestions_bloc.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
@@ -13,6 +14,7 @@ class Home extends StatelessWidget {
         BlocProvider(
           create: (ctx) {
             return HomeBloc(
+              suggestionsRepo: RepositoryProvider.of<SuggestionsRepo>(context),
               imagesRepo: RepositoryProvider.of<ImagesRepo>(ctx),
             )..add(HomeEventInitialLoad(query));
           },
@@ -30,7 +32,15 @@ class Home extends StatelessWidget {
           create: (ctx) {
             return HomeBloc(
               imagesRepo: RepositoryProvider.of<ImagesRepo>(ctx),
+              suggestionsRepo: RepositoryProvider.of<SuggestionsRepo>(context),
             )..add(HomeEventInitialLoad(''));
+          },
+        ),
+        BlocProvider(
+          create: (ctx) {
+            return SuggestionsBloc(
+              suggestionsRepo: RepositoryProvider.of<SuggestionsRepo>(context),
+            );
           },
         )
       ],
