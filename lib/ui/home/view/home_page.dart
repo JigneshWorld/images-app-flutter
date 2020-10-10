@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/home_bloc.dart';
 import '../../search/index.dart';
 import 'index.dart';
+import '../../search/search.dart' as search;
 
 class HomePage extends StatelessWidget {
   final bool onlyBody;
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
     // ignore: close_sinks
     final suggestionsBloc = BlocProvider.of<SuggestionsBloc>(context);
     suggestionsBloc.add(SuggestionsEventQueryChanged(''));
-    await showSearch<String>(
+    await search.showSearch<String>(
       context: context,
       delegate: AppSearchDelegate(suggestionsBloc),
     );
