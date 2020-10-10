@@ -22,7 +22,9 @@ class ImagesApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Images App',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: Colors.white,
+          accentColor: Colors.black,
+          brightness: Brightness.light,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         debugShowCheckedModeBanner: false,

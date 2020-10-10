@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:images_app/ui/swiper/image_swiper.dart';
 import '../bloc/home_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class GridImagesView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
@@ -10,41 +11,45 @@ class GridImagesView extends StatelessWidget {
 
   GridImagesView({Key key, this.state, this.bloc}) : super(key: key);
 
-  void onTapImage(BuildContext context, int initialIndex){
+  void onTapImage(BuildContext context, int initialIndex) {
     Navigator.push(context, ImageSwiper.route(bloc, initialIndex));
   }
 
   @override
   Widget build(BuildContext context) {
-    final delegate = SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-    );
-
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
-      child: GridView.builder(
-        gridDelegate: delegate,
-        itemBuilder: (_, index) {
-          if ((index >= state.images.length)) {
-            return _loaderGridItem();
-          }
-          final image = state.images[index];
-          return InkWell(
-            onTap: () => onTapImage(context, index),
-            child: CachedNetworkImage(
-              imageUrl: image.previewURL,
-              placeholder: (context, url) => Container(
-                color: Colors.grey[500],
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: StaggeredGridView.countBuilder(
+          primary: false,
+          crossAxisCount: 4,
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
+          staggeredTileBuilder: (index){
+            return StaggeredTile.fit(2);
+          },
+          itemBuilder: (_, index) {
+            if ((index >= state.images.length)) {
+              return _loaderGridItem();
+            }
+            final image = state.images[index];
+            return InkWell(
+              onTap: () => onTapImage(context, index),
+              child: CachedNetworkImage(
+                imageUrl: image.webformatURL,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey[500],
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey[500],
+                ),
               ),
-              errorWidget: (context, url, error) => Container(
-                color: Colors.grey[500],
-              ),
-            ),
-          );
-          // return Image.network(image.previewURL);
-        },
-        itemCount: state.itemCount,
-        controller: _scrollController,
+            );
+          },
+          itemCount: state.itemCount,
+          controller: _scrollController,
+        ),
       ),
     );
   }

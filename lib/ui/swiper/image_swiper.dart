@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:images_app/ui/home/bloc/home_bloc.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ImageSwiper extends StatelessWidget {
   final PageController controller;
@@ -39,19 +40,21 @@ class ImageSwiper extends StatelessWidget {
               onPageChanged: (page) => onPageChanged(context, page),
               itemBuilder: (_, index) {
                 if (index >= state.images.length) {
-                  return Center(child: CircularProgressIndicator());
+                  return Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 }
                 final image = state.images[index];
                 return Container(
-                  color: Colors.grey[500],
                   child: Center(
-                    child: CachedNetworkImage(
-                      imageUrl: image.largeImageURL,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey[500],
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey[500],
+                    child: PhotoView(
+                      backgroundDecoration: BoxDecoration(color: Colors.white),
+                      imageProvider:
+                          CachedNetworkImageProvider(image.largeImageURL),
+                      loadingBuilder: (_, __) => Center(
+                        child: CircularProgressIndicator(),
                       ),
                     ),
                   ),
@@ -70,7 +73,7 @@ class ImageSwiper extends StatelessWidget {
   }
 
   void onPageChanged(BuildContext context, int page) {
-    if(!bloc.state.isLoadingNextPage && page >= (bloc.state.itemCount - 5)){
+    if (!bloc.state.isLoadingNextPage && page >= (bloc.state.itemCount - 5)) {
       bloc.add(HomeEventLoadNextPage());
     }
   }
