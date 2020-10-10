@@ -18,11 +18,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(
     HomeEvent event,
   ) async* {
+    final itemsPerPage = imagesRepo.itemsPerPage;
     if (event is HomeEventInitialLoad) {
       yield HomeState(query: event.query, isLoading: true);
       try{
         final images = await imagesRepo.search(query: event.query);
-        final hasNextPage = images.length >= 20;
+        final hasNextPage = images.length >= itemsPerPage;
         yield state.copyWith(
           images: images,
           isLoading: false,
@@ -40,11 +41,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is HomeEventLoadNextPage) {
       yield state.copyWith(isLoadingNextPage: true);
       final prevImages = state.images;
-      final page = (prevImages.length / 20).ceil();
+      final page = (prevImages.length / itemsPerPage).ceil();
       try{
         final newPageImages =
         await imagesRepo.search(query: state.query, page: page+1);
-        final hasNextPage = newPageImages.length >= 20;
+        final hasNextPage = newPageImages.length >= itemsPerPage;
         yield state.copyWith(
           isLoadingNextPage: false,
           images: [...prevImages, ...newPageImages],

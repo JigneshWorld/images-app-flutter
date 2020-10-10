@@ -1,21 +1,32 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:images_app/domain/index.dart';
 
 class ImagesRepoImpl extends ImagesRepo {
   final Dio _dio;
+  final String baseUrl;
+  final String apiKey;
+  final int imagesPerPage;
 
-  ImagesRepoImpl()
-      : _dio = Dio(
-          BaseOptions(baseUrl: 'https://pixabay.com/'),
+  ImagesRepoImpl({
+    @required this.baseUrl,
+    @required this.apiKey,
+    @required this.imagesPerPage,
+  }) : _dio = Dio(
+          BaseOptions(baseUrl: baseUrl),
         );
 
   @override
-  Future<List<AppImage>> search({String query, int page = 1}) async {
+  Future<List<AppImage>> search({
+    String query,
+    int page = 1,
+  }) async {
     final params = <String, dynamic>{
-      'key': '18643016-c9f6d73eae18eb564a915a024',
+      'key': apiKey,
       'page': page,
+      'per_page': itemsPerPage,
       'image_type': 'photo'
     };
     if (query != null && query.trim().isNotEmpty) {
@@ -39,15 +50,18 @@ class ImagesRepoImpl extends ImagesRepo {
       }
     } catch (e, s) {
       print(e);
-      if(e is DioError){
+      if (e is DioError) {
         print(e.response);
         print(e.message);
         print(e.error);
         print(e.type);
         throw HttpException(e.response.toString());
-      }else{
+      } else {
         throw HttpException(e.toString());
       }
     }
   }
+
+  @override
+  int get itemsPerPage => imagesPerPage;
 }
