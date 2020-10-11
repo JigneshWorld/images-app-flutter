@@ -52,7 +52,7 @@ class ImageSwiper extends StatelessWidget {
                     child: PhotoView(
                       backgroundDecoration: BoxDecoration(color: Colors.white),
                       imageProvider:
-                          CachedNetworkImageProvider(image.largeImageURL),
+                          CachedNetworkImageProvider(image.largeURL),
                       loadingBuilder: (_, __) => Center(
                         child: CircularProgressIndicator(),
                       ),

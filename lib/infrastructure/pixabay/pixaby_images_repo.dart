@@ -3,17 +3,20 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:images_app/domain/index.dart';
+import 'index.dart';
 
-class ImagesRepoImpl extends ImagesRepo {
+class PixabayImagesRepo extends ImagesRepo {
   final Dio _dio;
   final String baseUrl;
   final String apiKey;
   final int imagesPerPage;
+  final PixabayImageParser parser;
 
-  ImagesRepoImpl({
+  PixabayImagesRepo({
     @required this.baseUrl,
     @required this.apiKey,
     @required this.imagesPerPage,
+    this.parser = const PixabayImageParser(),
   }) : _dio = Dio(
           BaseOptions(baseUrl: baseUrl),
         );
@@ -38,10 +41,10 @@ class ImagesRepoImpl extends ImagesRepo {
       if (response.statusCode == HttpStatus.ok) {
         print(response.data);
         final body = Map<String, dynamic>.from(response.data);
-        // final total = body['total'];
-        // final totalHits = body['totalHits'];
         final hits = body['hits'] as List<dynamic>;
-        return hits.map((hit) => AppImage.fromJson(hit)).toList();
+        return hits
+            .map((hit) => parser.fromJson(hit))
+            .toList();
       } else {
         print(response.statusCode);
         print(response.statusMessage);

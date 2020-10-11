@@ -21,15 +21,15 @@ Future<void> main() async {
     final baseUrl = DotEnv().env[BASE_URL];
     final apiKey = DotEnv().env[API_KEY];
     final itemsPerPage = DotEnv().env[ITEMS_PER_PAGE];
-    final maxSuggestionsToShow = DotEnv().env[MAX_SUGGESTIONS_TO_SHOW];
-
-    final imagesRepo = ImagesRepoImpl(
+    final imagesRepo = PixabayImagesRepo(
       baseUrl: baseUrl,
       apiKey: apiKey,
       imagesPerPage: int.tryParse(itemsPerPage) ?? 20,
     );
 
+    final maxSuggestionsToShow = DotEnv().env[MAX_SUGGESTIONS_TO_SHOW];
     final suggestionsRepo = SuggestionRepoImpl(
+      store: SharedPrefKeyValueStore(),
       maxSuggestionsToShow: int.tryParse(maxSuggestionsToShow) ?? 10,
     );
 

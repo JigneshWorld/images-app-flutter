@@ -37,7 +37,8 @@ class GridImagesView extends StatelessWidget {
             return InkWell(
               onTap: () => onTapImage(context, index),
               child: CachedNetworkImage(
-                imageUrl: image.webformatURL,
+                fit: BoxFit.cover,
+                imageUrl: image.thumbURL,
                 placeholder: (context, url) => Container(
                   color: Colors.grey[500],
                 ),
