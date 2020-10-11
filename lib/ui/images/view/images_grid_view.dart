@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:images_app/main.dart';
 import 'package:images_app/ui/swiper/swiper.dart';
 import '../images.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,9 +27,9 @@ class ImagesGridView extends StatelessWidget {
           crossAxisCount: 4,
           mainAxisSpacing: 4.0,
           crossAxisSpacing: 4.0,
-          staggeredTileBuilder: (index){
-            return StaggeredTile.fit(2);
-          },
+          staggeredTileBuilder: (index) => kAppGridTileStaggered
+              ? StaggeredTile.fit(2)
+              : StaggeredTile.count(2, 2),
           itemBuilder: (_, index) {
             if ((index >= state.images.length)) {
               return _loaderGridItem();
