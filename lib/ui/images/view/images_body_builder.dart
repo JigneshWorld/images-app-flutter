@@ -8,12 +8,12 @@ class ImagesBodyBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ImagesBloc, ImagesState>(
       builder: (_, state) {
-        if (state.isLoading) {
+        if (state.state == ImagesStateEnum.LOADING) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
-        if (state.errorMessage != null) {
+        if (state.state == ImagesStateEnum.ERROR) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(48.0),
@@ -24,13 +24,13 @@ class ImagesBodyBuilder extends StatelessWidget {
             ),
           );
         }
-        if (state.images.isNotEmpty) {
-          return ImagesGridView(
-            bloc: BlocProvider.of<ImagesBloc>(context),
-            state: state,
-          );
+        if (state.state == ImagesStateEnum.EMPTY) {
+          return NoImagesResult();
         }
-        return NoImagesResult();
+        return ImagesGridView(
+          bloc: BlocProvider.of<ImagesBloc>(context),
+          state: state,
+        );
       },
     );
   }

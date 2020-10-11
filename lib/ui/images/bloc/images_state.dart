@@ -1,9 +1,10 @@
 part of 'images_bloc.dart';
 
-class ImagesState extends Equatable {
-  final String query;
+enum ImagesStateEnum { LOADING, EMPTY, SUCCESS, ERROR }
 
-  final bool isLoading;
+class ImagesState extends Equatable {
+  final ImagesStateEnum state;
+  final String query;
 
   final List<AppImage> images;
 
@@ -11,48 +12,69 @@ class ImagesState extends Equatable {
 
   final bool hasNextPage;
   final bool isLoadingNextPage;
-  final String loadNextPageErrorMessage;
 
-  const ImagesState(
-      {this.query,
-      this.isLoading = true,
-      this.images = const [],
-      this.hasNextPage = false,
-      this.isLoadingNextPage = false,
-      this.errorMessage,
-      this.loadNextPageErrorMessage});
+  const ImagesState._({
+    this.state,
+    this.query,
+    this.images = const [],
+    this.hasNextPage = false,
+    this.isLoadingNextPage = false,
+    this.errorMessage,
+  });
+
+  static ImagesState loading() => ImagesState._(
+        state: ImagesStateEnum.LOADING,
+      );
+
+  static ImagesState error(String message) => ImagesState._(
+        state: ImagesStateEnum.ERROR,
+        errorMessage: message,
+      );
+
+  static ImagesState empty() => ImagesState._(
+        state: ImagesStateEnum.EMPTY,
+      );
+
+  static ImagesState success({
+    List<AppImage> images,
+    bool hasNextPage,
+    String query,
+  }) =>
+      ImagesState._(
+        state: ImagesStateEnum.SUCCESS,
+        images: images,
+        hasNextPage: hasNextPage,
+        query: query,
+      );
 
   int get itemCount => hasNextPage ? images.length + 1 : images.length;
 
   ImagesState copyWith({
+    ImagesStateEnum state,
     String query,
     bool isLoading,
     List<AppImage> images,
     String errorMessage,
     bool hasNextPage,
     bool isLoadingNextPage,
-    String loadNextPageErrorMessage,
   }) {
-    return ImagesState(
+    return ImagesState._(
+      state: state ?? this.state,
       query: query ?? this.query,
-      isLoading: isLoading ?? this.isLoading,
       images: images ?? this.images,
       errorMessage: errorMessage ?? this.errorMessage,
       hasNextPage: hasNextPage ?? this.hasNextPage,
       isLoadingNextPage: isLoadingNextPage ?? this.isLoadingNextPage,
-      loadNextPageErrorMessage:
-          loadNextPageErrorMessage ?? this.loadNextPageErrorMessage,
     );
   }
 
   @override
   List<Object> get props => [
+        state,
         query,
-        isLoading,
         images,
         errorMessage,
         hasNextPage,
         isLoadingNextPage,
-        loadNextPageErrorMessage,
       ];
 }

@@ -15,7 +15,7 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
   ImagesBloc({
     @required this.imagesRepo,
     @required this.suggestionsRepo,
-  }) : super(ImagesState());
+  }) : super(ImagesState.loading());
 
   @override
   Stream<ImagesState> mapEventToState(
@@ -23,24 +23,25 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
   ) async* {
     final itemsPerPage = imagesRepo.itemsPerPage;
     if (event is ImagesEventInitialLoad) {
-      yield ImagesState(query: event.query, isLoading: true);
-      try{
+      yield ImagesState.loading();
+      try {
         final images = await imagesRepo.search(query: event.query);
-        if(images.length > 0 && event.query != null && event.query.trim().isNotEmpty){
-          suggestionsRepo.add(event.query);
+        if (images != null && images.isNotEmpty) {
+          if (event.query != null && event.query.trim().isNotEmpty) {
+            suggestionsRepo.add(event.query);
+          }
+          final hasNextPage = images.length >= itemsPerPage;
+          yield ImagesState.success(
+            images: images,
+            hasNextPage: hasNextPage,
+            query: event.query,
+          );
+        } else {
+          yield ImagesState.empty();
         }
-        final hasNextPage = images.length >= itemsPerPage;
-        yield state.copyWith(
-          images: images,
-          isLoading: false,
-          hasNextPage: hasNextPage,
-        );
-      }catch(e){
+      } catch (e) {
         print(e);
-        yield state.copyWith(
-          isLoading: false,
-          errorMessage: e.toString()
-        );
+        yield ImagesState.error('Failed to get images');
       }
     }
 
@@ -48,24 +49,22 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
       yield state.copyWith(isLoadingNextPage: true);
       final prevImages = state.images;
       final page = (prevImages.length / itemsPerPage).ceil();
-      try{
+      try {
         final newPageImages =
-        await imagesRepo.search(query: state.query, page: page+1);
+            await imagesRepo.search(query: state.query, page: page + 1);
         final hasNextPage = newPageImages.length >= itemsPerPage;
         yield state.copyWith(
           isLoadingNextPage: false,
           images: [...prevImages, ...newPageImages],
           hasNextPage: hasNextPage,
         );
-      }catch(e){
+      } catch (e) {
         print(e);
         yield state.copyWith(
           isLoadingNextPage: false,
-          loadNextPageErrorMessage: e.toString(),
           hasNextPage: false,
         );
       }
-
     }
   }
 }
