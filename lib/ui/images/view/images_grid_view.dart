@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:images_app/ui/swiper/image_swiper.dart';
-import '../bloc/home_bloc.dart';
+import 'package:images_app/ui/swiper/swiper.dart';
+import '../images.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class GridImagesView extends StatelessWidget {
+class ImagesGridView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
-  final HomeState state;
-  final HomeBloc bloc;
+  final ImagesState state;
+  final ImagesBloc bloc;
 
-  GridImagesView({Key key, this.state, this.bloc}) : super(key: key);
+  ImagesGridView({Key key, this.state, this.bloc}) : super(key: key);
 
   void onTapImage(BuildContext context, int initialIndex) {
     Navigator.push(context, ImageSwiper.route(bloc, initialIndex));
@@ -62,7 +62,7 @@ class GridImagesView extends StatelessWidget {
   bool _handleScrollNotification(ScrollNotification notification) {
     if (notification is ScrollEndNotification &&
         _scrollController.position.extentAfter < 500) {
-      bloc.add(HomeEventLoadNextPage());
+      bloc.add(ImagesEventLoadNextPage());
     }
     return false;
   }

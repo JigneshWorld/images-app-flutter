@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'app/index.dart';
@@ -11,6 +13,7 @@ const MAX_SUGGESTIONS_TO_SHOW = 'MAX_SUGGESTIONS_TO_SHOW';
 Future<void> main() async {
   print('main: app start');
   try {
+    EquatableConfig.stringify = kDebugMode;
     await DotEnv().load('.env');
     if (!DotEnv().isEveryDefined(
         [BASE_URL, API_KEY, ITEMS_PER_PAGE, MAX_SUGGESTIONS_TO_SHOW])) {
@@ -39,7 +42,7 @@ Future<void> main() async {
         suggestionsRepo: suggestionsRepo,
       ),
     );
-  } catch (e, s) {
+  } catch (e) {
     print(e);
   }
 }

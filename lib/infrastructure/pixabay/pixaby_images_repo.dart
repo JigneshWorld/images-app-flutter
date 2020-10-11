@@ -51,7 +51,7 @@ class PixabayImagesRepo extends ImagesRepo {
         print(response.data);
         throw HttpException(response.statusMessage);
       }
-    } catch (e, s) {
+    } catch (e) {
       print(e);
       if (e is DioError) {
         print(e.response);

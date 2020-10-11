@@ -1,6 +1,6 @@
-part of 'home_bloc.dart';
+part of 'images_bloc.dart';
 
-class HomeState extends Equatable {
+class ImagesState extends Equatable {
   final String query;
 
   final bool isLoading;
@@ -13,7 +13,7 @@ class HomeState extends Equatable {
   final bool isLoadingNextPage;
   final String loadNextPageErrorMessage;
 
-  const HomeState(
+  const ImagesState(
       {this.query,
       this.isLoading = true,
       this.images = const [],
@@ -24,7 +24,7 @@ class HomeState extends Equatable {
 
   int get itemCount => hasNextPage ? images.length + 1 : images.length;
 
-  HomeState copyWith({
+  ImagesState copyWith({
     String query,
     bool isLoading,
     List<AppImage> images,
@@ -33,7 +33,7 @@ class HomeState extends Equatable {
     bool isLoadingNextPage,
     String loadNextPageErrorMessage,
   }) {
-    return HomeState(
+    return ImagesState(
       query: query ?? this.query,
       isLoading: isLoading ?? this.isLoading,
       images: images ?? this.images,

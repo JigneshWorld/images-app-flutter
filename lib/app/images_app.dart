@@ -28,7 +28,7 @@ class ImagesApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         debugShowCheckedModeBanner: false,
-        home: Home(),
+        home: ImagesPage(),
       ),
     );
   }

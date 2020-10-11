@@ -5,25 +5,25 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:images_app/domain/index.dart';
 
-part 'home_event.dart';
-part 'home_state.dart';
+part 'images_event.dart';
+part 'images_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
   final ImagesRepo imagesRepo;
   final SuggestionsRepo suggestionsRepo;
 
-  HomeBloc({
+  ImagesBloc({
     @required this.imagesRepo,
     @required this.suggestionsRepo,
-  }) : super(HomeState());
+  }) : super(ImagesState());
 
   @override
-  Stream<HomeState> mapEventToState(
-    HomeEvent event,
+  Stream<ImagesState> mapEventToState(
+    ImagesEvent event,
   ) async* {
     final itemsPerPage = imagesRepo.itemsPerPage;
-    if (event is HomeEventInitialLoad) {
-      yield HomeState(query: event.query, isLoading: true);
+    if (event is ImagesEventInitialLoad) {
+      yield ImagesState(query: event.query, isLoading: true);
       try{
         final images = await imagesRepo.search(query: event.query);
         if(images.length > 0 && event.query != null && event.query.trim().isNotEmpty){
@@ -35,7 +35,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           isLoading: false,
           hasNextPage: hasNextPage,
         );
-      }catch(e, s){
+      }catch(e){
         print(e);
         yield state.copyWith(
           isLoading: false,
@@ -44,7 +44,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    if (event is HomeEventLoadNextPage) {
+    if (event is ImagesEventLoadNextPage) {
       yield state.copyWith(isLoadingNextPage: true);
       final prevImages = state.images;
       final page = (prevImages.length / itemsPerPage).ceil();
@@ -57,7 +57,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           images: [...prevImages, ...newPageImages],
           hasNextPage: hasNextPage,
         );
-      }catch(e, s){
+      }catch(e){
         print(e);
         yield state.copyWith(
           isLoadingNextPage: false,
