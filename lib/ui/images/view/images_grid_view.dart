@@ -41,7 +41,7 @@ class ImagesGridView extends StatelessWidget {
                 fit: BoxFit.cover,
                 imageUrl: image.thumbURL,
                 placeholder: (context, url) => Container(
-                  color: Colors.grey[500],
+                  color: Colors.grey[300],
                 ),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[500],

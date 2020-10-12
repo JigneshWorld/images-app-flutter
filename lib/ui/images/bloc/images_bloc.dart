@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:images_app/domain/index.dart';
 
@@ -39,8 +40,8 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
         } else {
           yield ImagesState.empty();
         }
-      } catch (e) {
-        print(e);
+      } catch (e,s) {
+        Fimber.e('error: bloc: failed to load images', ex: e, stacktrace: s);
         yield ImagesState.error('Failed to get images');
       }
     }
@@ -58,8 +59,8 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
           images: [...prevImages, ...newPageImages],
           hasNextPage: hasNextPage,
         );
-      } catch (e) {
-        print(e);
+      } catch (e, s) {
+        Fimber.e('error: bloc: failed to load more images', ex: e, stacktrace: s);
         yield state.copyWith(
           isLoadingNextPage: false,
           hasNextPage: false,

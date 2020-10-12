@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:images_app/domain/index.dart';
 import 'index.dart';
@@ -35,29 +36,20 @@ class PixabayImagesRepo extends ImagesRepo {
     if (query != null && query.trim().isNotEmpty) {
       params['q'] = Uri.encodeQueryComponent(query.trim());
     }
-    print(params);
     try {
       final response = await _dio.get('api', queryParameters: params);
       if (response.statusCode == HttpStatus.ok) {
-        print(response.data);
         final body = Map<String, dynamic>.from(response.data);
         final hits = body['hits'] as List<dynamic>;
         return hits
             .map((hit) => parser.fromJson(hit))
             .toList();
       } else {
-        print(response.statusCode);
-        print(response.statusMessage);
-        print(response.data);
         throw HttpException(response.statusMessage);
       }
-    } catch (e) {
-      print(e);
+    } catch (e, s) {
+      Fimber.e('error: api: failed to fetch images', ex: e, stacktrace: s);
       if (e is DioError) {
-        print(e.response);
-        print(e.message);
-        print(e.error);
-        print(e.type);
         throw HttpException(e.response.toString());
       } else {
         throw HttpException(e.toString());

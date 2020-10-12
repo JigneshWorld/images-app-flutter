@@ -4,10 +4,12 @@ import '../domain/index.dart';
 import '../ui/index.dart';
 
 class ImagesApp extends StatelessWidget {
+  final String title;
   final ImagesRepo imagesRepo;
   final SuggestionsRepo suggestionsRepo;
 
   const ImagesApp({
+    @required this.title,
     @required this.imagesRepo,
     @required this.suggestionsRepo,
   });
@@ -20,7 +22,7 @@ class ImagesApp extends StatelessWidget {
         RepositoryProvider<SuggestionsRepo>.value(value: suggestionsRepo),
       ],
       child: MaterialApp(
-        title: 'Images App',
+        title: title,
         theme: ThemeData(
           primaryColor: Colors.white,
           accentColor: Colors.black,

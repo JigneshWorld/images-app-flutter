@@ -52,11 +52,11 @@ class PixabayImage extends Equatable implements AppImage {
 
 
   @override
-  String get thumbURL => previewURL;
+  String get thumbURL => webformatURL;
 
   @override
   String get largeURL => largeImageURL;
 
   @override
-  List<Object> get props => [pid, previewURL, largeURL];
+  List<Object> get props => [pid, previewURL, webformatURL, largeURL];
 }
