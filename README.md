@@ -7,12 +7,13 @@ Image gallery application that uses [pixabay](https://pixabay.com/) image source
 
 
 > Normal Grid Tiles
+
 [![Images App Demo - Normal Grids](https://img.youtube.com/vi/8LanmvkhMNE/0.jpg)](https://youtu.be/8LanmvkhMNE)
 
 
 > Staggered Grid Tiles
-[![Images App Demo - Staggered Grids](https://img.youtube.com/vi/LOkaxv36CC8/0.jpg)](https://youtu.be/LOkaxv36CC8)
 
+[![Images App Demo - Staggered Grids](https://img.youtube.com/vi/LOkaxv36CC8/0.jpg)](https://youtu.be/LOkaxv36CC8)
 
 ## Try APK 
 
