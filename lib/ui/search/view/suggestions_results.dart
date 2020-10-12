@@ -7,7 +7,11 @@ class SuggestionsResults extends StatelessWidget {
 
   final void Function(String suggestion) onTapSuggestion;
 
-  const SuggestionsResults({Key key, this.state, this.onTapSuggestion,}) : super(key: key);
+  const SuggestionsResults({
+    Key key,
+    this.state,
+    this.onTapSuggestion,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class SuggestionsResults extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               children: [
-                if(suggestion.length > stateQuery.length)
+                if (suggestion.length > stateQuery.length)
                   TextSpan(
                     text: suggestion.substring(stateQuery.length),
                     style: TextStyle(
@@ -36,7 +40,7 @@ class SuggestionsResults extends StatelessWidget {
             ),
           ),
           onTap: () {
-            if(onTapSuggestion != null){
+            if (onTapSuggestion != null) {
               onTapSuggestion(suggestion);
             }
           },

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:images_app/domain/index.dart';
 
+/// pixabay app image model implementation
 class PixabayImage extends Equatable implements AppImage {
   final int pid;
   final String pageURL;
@@ -49,7 +50,6 @@ class PixabayImage extends Equatable implements AppImage {
     this.user,
     this.userImageURL,
   });
-
 
   @override
   String get thumbURL => webformatURL;

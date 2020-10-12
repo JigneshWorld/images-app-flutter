@@ -1,9 +1,9 @@
 import 'pixabay_image.dart';
 
+/// pixabay images parser implementation
 class PixabayImageParser {
-  
   const PixabayImageParser();
-  
+
   PixabayImage fromJson(Map<String, dynamic> json) {
     return PixabayImage(
       pid: json['id'],

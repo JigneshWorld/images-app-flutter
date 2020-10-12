@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../search.dart';
+
 import '../../widgets/search.dart' as search;
+import '../search.dart';
 
 class AppSearchDelegate extends search.SearchDelegate<String> {
   final SuggestionsBloc bloc;

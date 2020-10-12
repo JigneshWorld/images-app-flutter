@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../search/search.dart';
 import '../../widgets/search.dart' as search;
 
 class SearchButton extends StatelessWidget {
-
   Future<void> _search(BuildContext context) async {
     // ignore: close_sinks
     final suggestionsBloc = BlocProvider.of<SuggestionsBloc>(context);

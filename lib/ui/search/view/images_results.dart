@@ -4,25 +4,24 @@ import 'package:images_app/domain/index.dart';
 import 'package:images_app/ui/images/images.dart';
 
 class ImagesResults extends StatelessWidget {
-
   final String query;
 
   const ImagesResults({Key key, this.query}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider<ImagesBloc>(
-            create: (ctx) {
-              return ImagesBloc(
-                suggestionsRepo: RepositoryProvider.of<SuggestionsRepo>(context),
-                imagesRepo: RepositoryProvider.of<ImagesRepo>(ctx),
-              )..add(ImagesEventInitialLoad(query));
-            },
-          )
-        ],
-        child: ImagesBodyBuilder(),
-      );
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ImagesBloc>(
+          create: (ctx) {
+            return ImagesBloc(
+              suggestionsRepo: RepositoryProvider.of<SuggestionsRepo>(context),
+              imagesRepo: RepositoryProvider.of<ImagesRepo>(ctx),
+            )..add(ImagesEventInitialLoad(query));
+          },
+        )
+      ],
+      child: ImagesBodyBuilder(),
+    );
   }
 }

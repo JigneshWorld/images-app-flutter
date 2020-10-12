@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:images_app/domain/index.dart';
-import '../../search/search.dart';
 import 'package:provider/provider.dart';
+
+import '../../search/search.dart';
 import '../images.dart';
 
 class ImagesPage extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:images_app/ui/images/images.dart';
+
 import 'index.dart';
 
 class ImagePager extends StatelessWidget {

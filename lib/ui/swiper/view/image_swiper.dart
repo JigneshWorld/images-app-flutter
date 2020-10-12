@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:images_app/ui/images/images.dart';
+
 import 'index.dart';
 
 class ImageSwiper extends StatelessWidget {
@@ -44,4 +45,3 @@ class ImageSwiper extends StatelessWidget {
     );
   }
 }
-

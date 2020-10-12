@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 
+/// common bloc observer to listen events, change state, transitions and errors
 class SimpleBlocObserver extends BlocObserver {
   @override
   void onChange(Cubit cubit, Change change) {
@@ -10,7 +11,7 @@ class SimpleBlocObserver extends BlocObserver {
 
   @override
   void onError(Cubit cubit, Object error, StackTrace stackTrace) {
-    Fimber.i('${cubit.runtimeType} $error $stackTrace');
+    Fimber.e('${cubit.runtimeType}', ex: error, stacktrace: stackTrace);
     super.onError(cubit, error, stackTrace);
   }
 

@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:images_app/main.dart';
 import 'package:images_app/ui/swiper/swiper.dart';
+
 import '../images.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ImagesGridView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();

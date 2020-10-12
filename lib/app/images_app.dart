@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../domain/index.dart';
 import '../ui/index.dart';
 
+/// application widget
 class ImagesApp extends StatelessWidget {
   final String title;
   final ImagesRepo imagesRepo;

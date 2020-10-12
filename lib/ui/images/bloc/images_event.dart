@@ -16,6 +16,4 @@ class ImagesEventInitialLoad extends ImagesEvent {
   List<Object> get props => [query];
 }
 
-class ImagesEventLoadNextPage extends ImagesEvent {
-
-}
+class ImagesEventLoadNextPage extends ImagesEvent {}

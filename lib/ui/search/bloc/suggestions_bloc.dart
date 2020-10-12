@@ -9,7 +9,6 @@ part 'suggestions_event.dart';
 part 'suggestions_state.dart';
 
 class SuggestionsBloc extends Bloc<SuggestionsEvent, SuggestionsState> {
-
   final SuggestionsRepo suggestionsRepo;
 
   SuggestionsBloc({@required this.suggestionsRepo}) : super(SuggestionsState());
@@ -18,7 +17,7 @@ class SuggestionsBloc extends Bloc<SuggestionsEvent, SuggestionsState> {
   Stream<SuggestionsState> mapEventToState(
     SuggestionsEvent event,
   ) async* {
-    if(event is SuggestionsEventQueryChanged){
+    if (event is SuggestionsEventQueryChanged) {
       yield state.copyWith(event.query, []);
       final suggestions = await suggestionsRepo.suggestions(event.query);
       yield state.copyWith(event.query, suggestions);

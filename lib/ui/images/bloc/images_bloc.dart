@@ -40,7 +40,7 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
         } else {
           yield ImagesState.empty();
         }
-      } catch (e,s) {
+      } catch (e, s) {
         Fimber.e('error: bloc: failed to load images', ex: e, stacktrace: s);
         yield ImagesState.error('Failed to get images');
       }
@@ -60,7 +60,8 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
           hasNextPage: hasNextPage,
         );
       } catch (e, s) {
-        Fimber.e('error: bloc: failed to load more images', ex: e, stacktrace: s);
+        Fimber.e('error: bloc: failed to load more images',
+            ex: e, stacktrace: s);
         yield state.copyWith(
           isLoadingNextPage: false,
           hasNextPage: false,

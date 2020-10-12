@@ -2,6 +2,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sentry/sentry.dart';
 
+/// Fimber log tree with sentry.io crash reporting API
 class CrashReportingTree extends LogTree {
   static const List<String> _defaultLevels = ['W', 'E'];
   static const Map<String, SeverityLevel> _levelsMap = {

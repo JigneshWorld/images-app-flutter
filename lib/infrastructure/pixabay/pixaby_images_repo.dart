@@ -4,8 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:images_app/domain/index.dart';
+
 import 'index.dart';
 
+/// pixabay images repo implementation
 class PixabayImagesRepo extends ImagesRepo {
   final Dio _dio;
   final String baseUrl;
@@ -41,9 +43,7 @@ class PixabayImagesRepo extends ImagesRepo {
       if (response.statusCode == HttpStatus.ok) {
         final body = Map<String, dynamic>.from(response.data);
         final hits = body['hits'] as List<dynamic>;
-        return hits
-            .map((hit) => parser.fromJson(hit))
-            .toList();
+        return hits.map((hit) => parser.fromJson(hit)).toList();
       } else {
         throw HttpException(response.statusMessage);
       }

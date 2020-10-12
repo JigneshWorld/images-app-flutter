@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:images_app/domain/index.dart';
 
+/// suggestions repo implementation
 class SuggestionRepoImpl extends SuggestionsRepo {
   static const String KEY_RECENT_SEARCHED_TERMS = 'KEY_RECENT_SEARCHED_TERMS';
 
@@ -14,7 +15,8 @@ class SuggestionRepoImpl extends SuggestionsRepo {
 
   @override
   Future<bool> add(String query) async {
-    var recentTerms = await store.getStringList(KEY_RECENT_SEARCHED_TERMS) ?? [];
+    var recentTerms =
+        await store.getStringList(KEY_RECENT_SEARCHED_TERMS) ?? [];
     if (recentTerms.contains(query)) {
       recentTerms.remove(query);
     }

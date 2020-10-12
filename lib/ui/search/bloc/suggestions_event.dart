@@ -5,7 +5,6 @@ abstract class SuggestionsEvent extends Equatable {
 }
 
 class SuggestionsEventQueryChanged extends SuggestionsEvent {
-
   final String query;
 
   const SuggestionsEventQueryChanged(this.query);
